@@ -18,15 +18,12 @@ var ajaxFunctions = {
 
       xmlhttp.onreadystatechange = function () {
          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            callback(xmlhttp.response);
+           callback(xmlhttp.response);
          }
       };
-      console.log("method ",method,"url ",url);
       xmlhttp.open(method, url, true);
       if (method =="POST"){
-        console.log("in the post if");
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        console.log("poststring ",poststring);
         xmlhttp.send(poststring);
       }else{
       xmlhttp.send();}

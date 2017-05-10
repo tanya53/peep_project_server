@@ -13,7 +13,7 @@ $(document).ready(function(){
   var apiUrl = window.location.origin + '/shiplogs';
   console.log("apiUrl ",apiUrl);
   //need to get the logs
-  ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET',apiUrl,function(data){
+  ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET',apiUrl,"",function(data){
     console.log("made ajax request");
     console.log("data ",data);
     createEntries(data);

@@ -345,7 +345,7 @@ $(document).ready(function(){
     if (player){
       reset = false;
       $("#startPeep").modal({show:true});
-      ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, function (data) {
+      ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, "",function (data) {
           peepPlays = data;
           //closeModal();
           $("#startPeep").modal("hide");

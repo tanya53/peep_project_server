@@ -19,32 +19,34 @@
     var btnid = id;
     var formid = "form"+i.toString();
     var blogid = id;
-    var cmtbox = "<form id = '"+formid+"'>Name:<input  type ='text' id= 'author' value =''><textarea id='cmtbox' rows="+5+" data-id = "+posts[i]._id+" data-comments ="+posts[i].comments.length+" ></textarea>"+
-          "<input type='button' onclick='getComment("+formid+","+blogid+")' value='Add Comment' /><br><p id='comment'></p></form>"
+    var k = posts[i].comments.length;
+    var cmtbox = "<form id = '"+formid+"'>Name:<input  type ='text' id= 'author"+ i.toString()+k.toString()+"' value =''><textarea id='cmtbox"+i.toString()+k.toString()+"' rows="+5+" data-id = "+posts[i]._id+" data-comments ="+posts[i].comments.length+" ></textarea>"+
+          "<input type='button' onclick='getComment("+i+","+k+")' value='Add Comment' /><br><p id='comment'></p></form>"
     blogid = "#"+blogid;
     $(blogid).append(cmtbox);
   }
 }
 
-function getComment(clicked,blogid){
-  var text = $('#cmtbox').val();
-  var author = $('#author').val();
+function getComment(postnbr,cmtnbr){
+  var cmtid = '#cmtbox'+postnbr.toString()+cmtnbr.toString();
+  var autid = '#author'+postnbr.toString()+cmtnbr.toString();
+  var text = $(cmtid).val();
+  var author = $(autid).val();
   //add the comment to the database, this could be a put, but using a post
   var apiUrl = window.location.origin + '/popposts/comment/';
-  var rec_nbr = $('#cmtbox').attr("data-id");
-  var nbrComments = parseInt($('#cmtbox').attr("data-comments")) + 1;
-  //need to do somehting about the spaces in the text and what if type in html
+  var rec_nbr = $(cmtid).attr("data-id");
+  var nbrComments = parseInt($(cmtid).attr("data-comments")) + 1;
   poststring = "id="+rec_nbr+"&nbr="+nbrComments+"&author="+author+"&comment='"+text+"'";
-  //update the info on the screen, I don't care if the database worked or not just logging error
-  var formid  = "#"+clicked.id;
-  var commententry ="<div><p>today</p><p>"+text+"</p><p>"+
-                    author+"</p></div>";
-  var addhere = "#"+blogid.id;
-  $(addhere).append(commententry);
-  $(formid).remove();
+
   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('POST',apiUrl,poststring,function(data){
-    console.log("data",data);
-    console.log("back from the ajax call");
+    //post the sanitized code from the slidingServer
+    var output = JSON.parse(data);
+    var commententry ="<div><p>today</p><p>"+output.comment+"</p><p>"+
+                      output.author+"</p></div>";
+    var addhere = "#post"+postnbr.toString();
+    var formid = "#form"+postnbr.toString();
+    $(formid).remove();
+    $(addhere).append(commententry);
 
   }));
 

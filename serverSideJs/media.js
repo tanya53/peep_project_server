@@ -2,10 +2,10 @@ var peepdb = require('../model/peepBlog.js');
 const mongoose = require('mongoose');
 var sanitizer = require('sanitizer'); //remove html from the user input
 
-  //return the log posts to the router
   //yet to fix:
   // - error  handling
   // - get next block of entries
+  //return the log posts to the client
   exports.displayLog = function (cb){
     console.log("in displayLog");
     const collec = "logs";

@@ -12,8 +12,8 @@ twitterAuth: {
   callbackURL: 'http://localhost:5000/auth/twitter/callback',
 },
 googleAuth: {
-  clientID : "98227431883-ioq2rkdfhdh7mb6sincti1rcthctuq57.apps.googleusercontent.com",
-  clientSecret: "29gpFKFeBgpgjNG7VHGw2OIC",
+  clientID : "98227431883-2nccjqnstnsp7sc6pleidrcettil8oop.apps.googleusercontent.com",
+  clientSecret: "pADdq0uOwQ-BcLfOU2BKdG-2",
   callbackURL : 'http://localhost:5000/auth/google/callback',
 },
 };

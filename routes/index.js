@@ -75,8 +75,16 @@ app.get('/auth/twitter/callback',passport.authenticate('twitter',{
 
 //google routes
 app.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
+//https://cloud.google.com/nodejs/getting-started/authenticate-users
+//save the url of the users's current page so the app can redirect back to it
+//(req,res,next) => {
+//if(req.query.return){
+//req.session.oath2return = req.query.return;
+//}
+//next();
+//}
 
-app.get('auth/google/callback',passport.authenticate('google',{
+app.get('/auth/google/callback',passport.authenticate('google',{
   successRedirect:'/profile',
   failureRedirect:'/',
 }));

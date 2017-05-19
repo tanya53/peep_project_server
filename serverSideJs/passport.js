@@ -186,7 +186,11 @@ passport.use(new FacebookStrategy({
     }));
 
 //google signin
-
+function extractProfile (profile) {
+  return {id : profile.id,
+          displayName: profile.displayName,
+        };
+}
 passport.use(new GoogleStrategy({
   clientID: configAuth.googleAuth.clientID,
   clientSecret: configAuth.googleAuth.clientSecret,
@@ -196,15 +200,22 @@ passport.use(new GoogleStrategy({
     console.log("we are in the google authentication ha ha");
     process.nextTick(function(){
       collec = "users";
+      console.log("we are in nexttick");
+      console.log("token ",token);
+      console.log("refresh token",refreshToken);
+      console.log("profile ",profile);
+      console.log("profile.displayName ",profile.displayName);
       mongoose.connection.db.collection(collec,function(err,collection){
       console.log ("collection not found err ",err)
-      collection.findOne({'google.id':google.id},function(err,user){
+      collection.findOne({'google.id':profile.id},function(err,user){
+        console.log("we are back from the findOne ,err is ",err);
         if (err)
           return done(err);
         if (user) {
           console.log("user in the database already");
           return done(null,user);
         } else {
+          console.log("trying to create a new user");
           var newUser = new users.user();
           newUser.google.id = profile.id;
           newUser.google.token = token;

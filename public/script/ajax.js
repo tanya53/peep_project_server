@@ -20,6 +20,10 @@ var ajaxFunctions = {
          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
            callback(xmlhttp.response);
          }
+         if (xmlhttp.readyState === 4 && xmlhttp.status === 500){
+           console.log("we landed here");
+
+         }
       };
       xmlhttp.open(method, url, true);
       if (method =="POST"){

@@ -13,6 +13,7 @@ app.route('/').get(function(req,res){
 
 app.route('/tempindex').get(function(req,res){
   console.log("we made it to tempindex");
+  console.log("we made it here from the redirect");
   res.render(path + '/public/views/tempindex.ejs');
 });
 
@@ -111,8 +112,9 @@ app.route('/popposts/').post(function(req,res){
   });
 });
 
-app.route('/popposts/comment').post(function(req,res){
-  console.log("in adding comments");
+//app.route('/popposts/comment').post(function(req,res){
+app.post('/popposts/comment',isLoggedIn,function(req, res, next) {
+  console.log("****in adding comments");
   media.addComments(req,function(err,docs){
     res.send(docs);
   });
@@ -138,12 +140,20 @@ app.route('/sliding/').get(function(req,res){
   console.log("we are back",outstr);
   res.send(outstr);
 });
-}
+
 
 //make sure the user is logged in only using for comments so far
 function isLoggedIn(req,res,next){
+  console.log("in isLoggedIn");
   if (req.isAuthenticated())
+    { console.log("we are logged in");
     return next();
+  }
   // not logged in
-  res.redirect('/');
+  console.log("we are not logged in doing the redirect");
+  //res.redirect(307,'/tempindex');
+  //res.redirect('/tempindex');
+  //res.send({redirect:'307/tempindex'});
+  res.status(500).send("the user isn't logged in");
+}
 }

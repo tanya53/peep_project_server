@@ -75,7 +75,7 @@ exports.addComments = function(req,cb){
       }
       else {
         //make the author and comment json and send back
-        var outstr = JSON.stringify({author:author,comment:comment});
+        var outstr = JSON.stringify({loggedin : "true",author:author,comment:comment});
       }
       cb(err,outstr);
     });

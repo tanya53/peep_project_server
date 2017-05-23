@@ -13,7 +13,6 @@ app.route('/').get(function(req,res){
 
 app.route('/tempindex').get(function(req,res){
   console.log("we made it to tempindex");
-  console.log("we made it here from the redirect");
   res.render(path + '/public/views/tempindex.ejs');
 });
 
@@ -154,6 +153,10 @@ function isLoggedIn(req,res,next){
   //res.redirect(307,'/tempindex');
   //res.redirect('/tempindex');
   //res.send({redirect:'307/tempindex'});
-  res.status(500).send("the user isn't logged in");
+  //res.status(500).send("the user isn't logged in");
+  author = "login";
+  comment ="";
+  var docs = JSON.stringify({loggedin:"false"});
+  res.send(docs);
 }
 }

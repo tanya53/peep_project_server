@@ -40,14 +40,20 @@ function getComment(postnbr,cmtnbr){
 
   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('POST',apiUrl,poststring,function(data){
     //post the sanitized code from the slidingServer
+    //if user not logged in redirect to the login page
+    console.log("data",data);
     var output = JSON.parse(data);
-    var commententry ="<div><p>today</p><p>"+output.comment+"</p><p>"+
-                      output.author+"</p></div>";
-    var addhere = "#post"+postnbr.toString();
-    var formid = "#form"+postnbr.toString();
-    $(formid).remove();
-    $(addhere).append(commententry);
-
+    if ((output.loggedin =="true")){
+      var commententry ="<div><p>today</p><p>"+output.comment+"</p><p>"+
+                        output.author+"</p></div>";
+      var addhere = "#post"+postnbr.toString();
+      var formid = "#form"+postnbr.toString();
+      $(formid).remove();
+      $(addhere).append(commententry);
+    } else {
+      console.log("user is not logged in");
+      window.location = window.location.origin + '/tempindex';
+    }
   }));
 
 }

@@ -44,9 +44,11 @@ function updateTetrisBoard(){
 }
 function setIntervals(){
   timer1 = setInterval(updateTetrisBoard,20);
+  timer2 = setInterval(createNewPiece,4000);
 }
 function clearIntervals(){
   clearInterval(timer1);
+  clearInterval(timer2);
 }
 function tetElementOnDom(type,id){
   var element=document.createElement(type);
@@ -109,6 +111,7 @@ function piece (){
     this.type = SHAPES[shapenbr];
     this.xpos = XPOS[shapenbr];
     this.ypos = YPOS[shapenbr];
+    this.drawShape();
   },
   this.drawShape = function(){
     var x,y;
@@ -156,6 +159,10 @@ function piece (){
 function generate_random (max,offset){
   return Math.floor((Math.random()*max)+offset);
 }
+function createNewPiece(){
+  newpiece = new piece();
+  newpiece.createPiece(100,100);
+}
 
 
 function startTetris(level){
@@ -164,7 +171,7 @@ function startTetris(level){
   TetrisBoard.canvas.tabIndex = 1;
   newpiece = new piece();
   newpiece.createPiece(100,100);
-  newpiece.drawShape();
+  //newpiece.drawShape();
   setIntervals();
 }
 function resetTetrisGame(level){

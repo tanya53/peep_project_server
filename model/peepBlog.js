@@ -18,6 +18,12 @@ var shipLogSchema = new Schema({
   date : String,
   entry : String
 });
+//schema for polls
+var pollSchema = new Schema({
+  creator : String,
+  title: String,
+  items:[{itemnbr: Number, item:String,votes:String}]
+});
 //schema for user for authentication
 var userSchema = new Schema({
   local :{
@@ -45,15 +51,13 @@ var userSchema = new Schema({
   },
 });
 
-//generate the hash of the password, encrypt in database
+//generate the hash of the password, encrypt in database for local user
 userSchema.methods.generateHash = function(password){
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8),null);
 };
 
-//check if the password is valid or Not
+//check if the password is valid or Not for local user
 userSchema.methods.validPassword = function(password,pass2){
-  console.log("in validPassword",password,pass2);
-  console.log("bcrypt ",bcrypt.compareSync(password, pass2));
   return bcrypt.compareSync(password,pass2);
 
 };
@@ -61,4 +65,5 @@ userSchema.methods.validPassword = function(password,pass2){
 var popularPost = mongoose.model('popularPost',popularPostSchema,'posts');
 var shipLog = mongoose.model('shipLog',shipLogSchema,'logs');
 var user = mongoose.model('user',userSchema,'users');
-module.exports = {popularPost,shipLog,user};
+var poll = mongoose.model('poll',pollSchema,'polls');
+module.exports = {popularPost,shipLog,user,poll};

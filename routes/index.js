@@ -13,6 +13,7 @@ app.route('/').get(function(req,res){
 
 app.route('/tempindex').get(function(req,res){
   console.log("we made it to tempindex");
+  console.log("path is ",path+'/public/views/tempindex.ejs');
   res.render(path + '/public/views/tempindex.ejs');
 });
 
@@ -139,6 +140,7 @@ app.route('/sliding/').get(function(req,res){
   console.log("we are back",outstr);
   res.send(outstr);
 });
+
 
 
 //make sure the user is logged in only using for comments so far

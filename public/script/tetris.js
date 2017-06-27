@@ -12,11 +12,14 @@
 var shapes = [],
     newpiece;
 
-
-
 const UP = 1,
       LEFT = 2,
-      DOWN = 3;
+      DOWN = 3,
+      SIDE = 20,
+      HEIGHT = 440,
+      WIDTH = 500,
+      ROWS = WIDTH/SIDE,
+      COLS = HEIGHT/SIDE;
 
 
 var timer1;
@@ -44,7 +47,7 @@ function updateTetrisBoard(){
 }
 function setIntervals(){
   timer1 = setInterval(updateTetrisBoard,20);
-  timer2 = setInterval(createNewPiece,4000);
+  timer2 = setInterval(createNewPiece,4500);
 }
 function clearIntervals(){
   clearInterval(timer1);
@@ -55,16 +58,33 @@ function tetElementOnDom(type,id){
   element.id = id;
   return element;
 }
-
+//slices of the board
+function tilePiece () {
+  this.height = 420;
+  this.filled = false;
+}
 /*create the board */
 var TetrisBoard = {
   canvas: tetElementOnDom("canvas","tetrisID"),
   start: function(level){
-    this.canvas.width = 500;
-    this.canvas.height = 440;
+    this.canvas.width = WIDTH;
+    this.canvas.height = HEIGHT;
     this.context = this.canvas.getContext("2d");
     document.getElementById("tetris").insertBefore(this.canvas,document.getElementById("tetris").childNodes[0]);
-    this.level = level;
+    this.level = level
+    this.height = HEIGHT;
+    this.tiles = new Array();
+    for (var x=0;x<COLS;x++){
+      this.tiles[x] = new tilePiece();
+    }
+    //set up the arrays that hold the board tiles
+    /*for (var x = 0;x<25;x++){
+      this.col[x].height=440;
+      for (var y =0;y<22;y++){
+        this.tile[x][y].fill = false;
+      }
+    };*/
+
     window.addEventListener('keydown',function(e){
       TetrisBoard.key = e.keyCode;
       e.preventDefault();// prevents arrow keys from working as arrow keys in canvas
@@ -78,7 +98,6 @@ var TetrisBoard = {
   }
 };
 function piece (){
-  const SIDE = 20; //side of one piece
   const COLORS = ["#ff0000","#00ff00","#0000ff","#ffff00","#ff00ff","#ffffff"];
   const SHAPES = ["square",
                   "line",
@@ -129,9 +148,14 @@ function piece (){
   this.newPos = function(){
     const inc = .5; //down .5 pixels a frame
     for (var i=0;i<4;i++){
+      if (this.y + inc >= HEIGHT-SIDE ) {
+        console.log("this y ",this.y);
+        this.y = HEIGHT-SIDE;
+      } else {
       this.y = this.y + inc;
     }
-  },
+    }
+   },
   this.update = function(){
     var tmp;
     //add in the speedX
@@ -161,7 +185,7 @@ function generate_random (max,offset){
 }
 function createNewPiece(){
   newpiece = new piece();
-  newpiece.createPiece(100,100);
+  newpiece.createPiece(100,0);
 }
 
 
@@ -170,7 +194,7 @@ function startTetris(level){
   TetrisBoard.start(level);
   TetrisBoard.canvas.tabIndex = 1;
   newpiece = new piece();
-  newpiece.createPiece(100,100);
+  newpiece.createPiece(100,0);
   //newpiece.drawShape();
   setIntervals();
 }

@@ -2,7 +2,7 @@ var localStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var db = require('../model/peepBlog');
+var User = require('../model/peepBlog.js');
 var configAuth = require('../config/auth.js');
 var mongoose = require('mongoose');
 
@@ -13,7 +13,8 @@ module.exports = function(passport){
   });
 
   passport.deserializeUser(function(id,done){
-    db.user.findById(id,function(err,user){
+    User.findById(id,function(err,user){
+    //db.user.findById(id,function(err,user){
       if(!err) done(null,user);
       else {
         console.lod("error in deserializeuser ");
@@ -29,7 +30,8 @@ module.exports = function(passport){
     passReqToCallback : true // passentire request
   },
   function(req,email,password,done){// email and password from form }
-    db.user.findOne({'local.email':email},function(err,user){
+    User.findOne({'local.email':email},function(err,user){
+    //db.user.findOne({'local.email':email},function(err,user){
     if (err)
       return done(err);
     if (!user)
@@ -49,12 +51,18 @@ passport.use('local-signup',new localStrategy({
   function(req,email,password,done){
     //asynchronous
     process.nextTick(function(){
-      db.user.findOne({'local.email':email},function(err,user){
-      if (err)
+      console.log("point 1");
+      User.findOne({'local.email':email},function(err,user){
+      //db.user.findOne({'local.email':email},function(err,user){
+      if (err){
+        console.log("point 2");
         return done(err)
+      }
       if (user) {
+        console.log("point 3");
         return done(null,false,req.flash('signupMessage','This email is already has user'))
       } else {
+        console.log("point 4");
         var newUser = new db.user();
         newUser.password = password;
         newUser.local.email = email;
@@ -81,7 +89,8 @@ passport.use(new FacebookStrategy({
   },
   function(token,refreshToken,profile,done){
     process.nextTick(function(){
-    db.user.findOne({'facebook.id':profile.id},function(err,user){
+    User.findOne({'facebook.id':profile.id},function(err,user){
+    //db.user.findOne({'facebook.id':profile.id},function(err,user){
       if (err)
         return done(err);
       if (user) {
@@ -113,7 +122,8 @@ passport.use(new FacebookStrategy({
     },
     function(token,refreshToken,profile,done){
       process.nextTick(function(){
-        db.user.findOne({'twitter.id':profile.id},function(err,user){
+        User.findOne({'twitter.id':profile.id},function(err,user){
+        //db.user.findOne({'twitter.id':profile.id},function(err,user){
           if (err)
             return done(err);
           if (user) {
@@ -149,7 +159,8 @@ passport.use(new GoogleStrategy({
   },
   function(token,refreshToken,profile,done){
     process.nextTick(function(){
-      db.user.findOne({'google.id':profile.id},function(err,user){
+      User.findOne({'google.id':profile.id},function(err,user){
+      //db.user.findOne({'google.id':profile.id},function(err,user){
         if (err)
           return done(err);
         if (user) {

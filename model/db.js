@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+
 var uristring =
-process.env.MONGOLAB_URI ||
+process.env.MONGODB_URI ||
 process.env.MONGOHQ_URL ||
 'mongodb://localhost/peepBlog';
 const connection = mongoose.connect(uristring);

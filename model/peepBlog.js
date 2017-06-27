@@ -3,27 +3,6 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt-nodejs'),
     Schema = mongoose.Schema;
 
-// create a Schema for popular post articles and the comments
-var popularPostSchema = new Schema({
-  title: String,
-  by : String,
-  entry: Number,
-  likes : Number,
-  date : String,
-  comments : [{commentdate : String,comment:String,author:String,commentlikes:Number}]
-});
-//schema for tigger's log
-var shipLogSchema = new Schema({
-  title: String,
-  date : String,
-  entry : String
-});
-//schema for polls
-var pollSchema = new Schema({
-  creator : String,
-  title: String,
-  items:[{itemnbr: Number, item:String,votes:String}]
-});
 //schema for user for authentication
 var userSchema = new Schema({
   local :{
@@ -62,8 +41,6 @@ userSchema.methods.validPassword = function(password,pass2){
 
 };
 
-var popularPost = mongoose.model('popularPost',popularPostSchema,'posts');
-var shipLog = mongoose.model('shipLog',shipLogSchema,'logs');
-var user = mongoose.model('user',userSchema,'users');
-var poll = mongoose.model('poll',pollSchema,'polls');
-module.exports = {popularPost,shipLog,user,poll};
+module.exports = mongoose.model('User',userSchema);
+//var user = mongoose.model('user',userSchema,'users');
+//module.exports = {user:user};

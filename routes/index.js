@@ -1,6 +1,6 @@
 var express = require('express');
 var path = process.cwd();
-var peepdb = require('../model/peepBlog.js');
+//var peepdb = require('../model/peepBlog.js');
 //const mongoose = require('mongoose');
 var tiles = require('../serverSideJs/slidingServer');
 var media = require('../serverSideJs/media');
